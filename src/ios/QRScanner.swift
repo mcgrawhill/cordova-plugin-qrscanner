@@ -3,10 +3,10 @@ import AVFoundation
 
 @objc(QRScanner)
 class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
-    
+
     class CameraView: UIView {
         var videoPreviewLayer:AVCaptureVideoPreviewLayer?
-        
+
         func interfaceOrientationToVideoOrientation(orientation : UIInterfaceOrientation) -> AVCaptureVideoOrientation {
             switch (orientation) {
             case UIInterfaceOrientation.portrait:
@@ -29,21 +29,23 @@ class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
                     layer.frame = self.bounds;
                 }
             }
-            
+
             self.videoPreviewLayer?.connection.videoOrientation = interfaceOrientationToVideoOrientation(orientation:  UIApplication.shared.statusBarOrientation);
         }
-        
-        
+
+
         func addPreviewLayer(previewLayer:AVCaptureVideoPreviewLayer?) {
             previewLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
             previewLayer!.frame = self.bounds
             self.layer.addSublayer(previewLayer!)
             self.videoPreviewLayer = previewLayer;
         }
-        
+
         func removePreviewLayer() {
-            self.videoPreviewLayer!.removeFromSuperlayer()
-            self.videoPreviewLayer = nil
+            if (self.videoPreviewLayer != nil) {
+                self.videoPreviewLayer?.removeFromSuperlayer()
+                self.videoPreviewLayer = nil
+            }
         }
     }
 
